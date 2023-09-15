@@ -7,6 +7,16 @@
 <div class="container-fluid">
     <div id="fornecedor-create-container" class="col-md-6 offset-md-3">
         <h1>Cadastro de Fornecedor</h1>
+        @if($errors->any())
+        @foreach($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ $error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="$('.show').hide(500);">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endforeach
+        @endif
         <form action="/fornecedor" method="POST">
             @csrf
             <div class="form-group">
@@ -31,5 +41,8 @@
         </form>
     </div>
 </div>
-
+<script>
+    $('#cnpj').mask('00.000.000/0000-00', {reverse: true});
+    $('#celular').mask('(00) 0 0000-0000');
+</script>
 @endsection

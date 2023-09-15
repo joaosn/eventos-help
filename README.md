@@ -1,5 +1,5 @@
 
-## About Laravel
+## como rodar projeto 
 
 -->habilitar zip no php.ini
 -->composer update 
@@ -11,3 +11,4 @@
 -->php artisan tinker
 -->User::factory(10)->create(); 
 -->php artisan serve
+-->npm run dev 

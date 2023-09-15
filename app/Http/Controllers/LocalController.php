@@ -2,12 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Local;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LocalController extends Controller
 {
+    public function validar($request) {
+        // Regras de validação
+        $rules = [
+            'nome' => 'required',
+            'endereco' => 'required',
+            'cidade'  => 'required',
+            'bairro' => 'required',
+            'complemento' => 'required',
+            'responsavel' => 'required',
+        ];
+
+        // Mensagens personalizadas
+        $messages = [
+            'nome.required' => 'O campo nome é obrigatório.',
+            'endereco.required' => 'O campo endereço é obrigatório.',
+            'cidade.required' => 'O campo cidade é obrigatório.',
+            'bairro.required' => 'O campo bairro é obrigatório.',
+            'complemento.required' => 'O campo complemento é obrigatório.',
+            'responsavel.required' => 'O campo responsável é obrigatório.',
+        ];
+
+        // Validar os campos
+        $request->validate($rules, $messages);
+    }
+
     public function index()
     {
         $locais = Local::all();
@@ -23,8 +49,10 @@ class LocalController extends Controller
 
     public function store(Request $request)
     {
+        $this->validar($request);
         $local = new Local;
         $local->nome = $request->nome;
+        $local->cidade = $request->cidade;
         $local->endereco = $request->endereco;
         $local->bairro = $request->bairro;
         $local->complemento = $request->complemento;
@@ -44,8 +72,10 @@ class LocalController extends Controller
 
     public function update(Request $request, $idlocal)
     {
+        $this->validar($request);
         $local = Local::findOrFail($idlocal);
         $local->nome = $request->nome;
+        $local->cidade = $request->cidade;
         $local->endereco = $request->endereco;
         $local->bairro = $request->bairro;
         $local->complemento = $request->complemento;
@@ -58,6 +88,11 @@ class LocalController extends Controller
 
     public function destroy($idlocal)
     {
+        $existeEvento = Event::where('idlocal', '=', $idlocal)->exists();
+        if($existeEvento){
+            return redirect('/locais')->with('msg', 'Não é possível excluir o local, pois existem eventos vinculados a ele.');
+        }
+
         $local = Local::findOrFail($idlocal);
         $local->delete();
     

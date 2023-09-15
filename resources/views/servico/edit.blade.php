@@ -6,6 +6,16 @@
 
 <div id="servico-edit-container" class="col-md-6 offset-md-3">
     <h1>Editar Serviço</h1>
+    @if($errors->any())
+    @foreach($errors->all() as $error)
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ $error }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="$('.show').hide(500);">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endforeach
+    @endif
     <form action="/servico/{{ $servico->idservico }}" method="POST">
         @csrf
         @method('PUT')

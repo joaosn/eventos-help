@@ -6,12 +6,28 @@
 
 <div id="local-create-container" class="col-md-6 offset-md-3">
     <h1>Cadastro de Local</h1>
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ $error }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="$('.show').hide(500);">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endforeach
+    @endif
+
     <form action="/locais" method="POST">
         @csrf
         
         <div class="form-group">
             <label for="nome">Nome do Local:</label>
             <input type="text" class="form-control" id="nome" name="nome">
+        </div>
+
+        <div class="form-group">
+            <label for="nome">Cidade:</label>
+            <input type="text" class="form-control" id="cidade" name="cidade">
         </div>
 
         <div class="form-group">

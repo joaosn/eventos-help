@@ -6,6 +6,14 @@
 
 <div class="container mt-3">
     <h1>Listagem de Serviços</h1>
+    @if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="$('.show').hide(500);">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
     <!-- Link para criar um novo servico -->
     <a href="/servico/create" class="btn btn-primary mb-2">Novo Serviço</a>
     <table class="table">

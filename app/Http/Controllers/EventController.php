@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\Local;
+use App\Models\Servico;
 use App\Models\User;
 
 class EventController extends Controller
@@ -23,15 +25,14 @@ class EventController extends Controller
             $events = Event::all();
         }
 
-
         return view('welcome', ['events' => $events, 'search' => $search]);
-
 
     }
 
     public function create() {
-        return view('events.create');
-
+        $servicos = Servico::all();
+        $locais   = Local::all();
+        return view('events.create', ['servicos' => $servicos, 'locais' => $locais]);
     }
 
     public function store(Request $request) {
@@ -55,8 +56,6 @@ class EventController extends Controller
             $requestImage->move(public_path('img/events'), $imageName);
 
             $event->image = $imageName;
-
-
 
         }
 

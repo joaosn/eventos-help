@@ -6,13 +6,19 @@ use App\Models\Event;
 use App\Models\Local;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class LocalController extends Controller
 {
     public function validar($request) {
         // Regras de validação
         $rules = [
-            'nome' => 'required',
+            'nome' => [
+                'required',
+                Rule::unique('locais')->where(function ($query) use ($request) {
+                    return $query->where('cidade', $request->cidade);
+                }),
+            ],
             'endereco' => 'required',
             'cidade'  => 'required',
             'bairro' => 'required',
@@ -23,6 +29,7 @@ class LocalController extends Controller
         // Mensagens personalizadas
         $messages = [
             'nome.required' => 'O campo nome é obrigatório.',
+            'nome.unique' => 'Um local com esse nome já existe nessa cidade.',
             'endereco.required' => 'O campo endereço é obrigatório.',
             'cidade.required' => 'O campo cidade é obrigatório.',
             'bairro.required' => 'O campo bairro é obrigatório.',
@@ -72,7 +79,7 @@ class LocalController extends Controller
 
     public function update(Request $request, $idlocal)
     {
-        $this->validar($request);
+        $this->validar($request, $idlocal);
         $local = Local::findOrFail($idlocal);
         $local->nome = $request->nome;
         $local->cidade = $request->cidade;

@@ -10,21 +10,21 @@
      <input type="text" id="search" name="search" class="form-control" placeholder="Procurar">
 </div>
 
-<div id="events-container" class="cold-md-12">
+<div id="events-container" class="container-fluid">
       @if($search)
       <h2>Buscando por: {{ $search }}</h2>
       @else
       <h2>Próximos Eventos</h2>
       <p class="subtitle">Veja os eventos dos próximos dias</p>
       @endif
-      <div id="cards-container" class="row">
+      <div id="cards-container" class="container">
             @foreach($events as $event)
-            <div class="card col-md-3">
+            <div class="card col">
              <img src="/img/events/{{ $event->image }}" alt="{{ $event->title }}">
              <div class="card-body">
                   <p class="card-date">{{ date('d/m/Y', strtotime($event->date)) }}</p>
                   <h5 class="card-title">{{ $event->title }}</h5>
-                  <p class="card-participants">X Participantes</p>
+                  <p class="card-participants">{{$event->confirmations_count}} X Participantes</p>
                   <a href="/events/{{ $event->id }}" class="btn btn-primary">Saber mais</a>
              </div>
             </div>

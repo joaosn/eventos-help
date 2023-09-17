@@ -5,6 +5,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\LocalController;
+use App\Http\Controllers\EventConfirmationController;
 
 
 Route::get('/', [EventController::class, 'index']);
@@ -17,7 +18,11 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('fornecedor', FornecedorController::class);
     Route::resource('servico', ServicoController::class);
     Route::resource('locais', LocalController::class);
+
 });
+
+Route::post('/events/{event}/confirm', [EventConfirmationController::class, 'confirm'])->name('events.confirm')->middleware('auth');
+
 
 
 Route::get('/contato', function () {

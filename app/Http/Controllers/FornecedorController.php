@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class FornecedorController extends Controller
 {
-    public function validar(Request $request)
+    public function validar(Request $request, $idfornecedor = null)
     {
-            // Regras de validação
+        // Removendo a máscara do CNPJ para manter apenas os números
+        $request->merge(['cnpj' => preg_replace('/\D/', '', $request->cnpj)]);
+
+        // Regras de validação
         $rules = [
             'nome' => 'required',
-            'cnpj' => 'required|size:14|unique:fornecedores,cnpj', // Supondo que o cnpj tenha 14 dígitos e seja único na tabela fornecedores.
+            'cnpj' => 'required|size:14|unique:fornecedores,cnpj' . ($idfornecedor ? ',' . $idfornecedor : ''), // Regra ajustada
             'celular' => 'required',
         ];
 
@@ -68,7 +71,7 @@ class FornecedorController extends Controller
 
     public function update(Request $request, $idfornecedor)
     {
-        $this->validar($request);
+        $this->validar($request, $idfornecedor);
         $fornecedor = Fornecedor::findOrFail($idfornecedor);
         $fornecedor->nome = $request->nome;
         $fornecedor->cnpj = $request->cnpj;

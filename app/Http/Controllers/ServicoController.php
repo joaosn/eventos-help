@@ -10,22 +10,23 @@ use Illuminate\Support\Facades\Auth;
 
 class ServicoController extends Controller
 {
-    public function validar(Request $request)
+    public function validar(Request $request, $idservico = null)
     {
-         // Regras de validação
+        // Regras de validação
         $rules = [
-            'nome' => 'required',
-            'descricao' => 'required|max:255', // Assumindo que você quer limitar a descrição em 255 caracteres. Ajuste se necessário.
-            'idfornecedor' => 'required|exists:fornecedores,id', // Verifica se o fornecedor informado existe na tabela 'fornecedores'.
+            'nome' => 'required|unique:servicos,nome' . ($idservico ? ',' . $idservico : ''),
+            'descricao' => 'required|max:255',
+            'idfornecedor' => 'required|exists:fornecedores,idfornecedor',
         ];
 
         // Mensagens personalizadas
         $messages = [
             'nome.required' => 'O campo nome é obrigatório.',
+            'nome.unique' => 'Este nome de serviço já está em uso.',
             'descricao.required' => 'O campo descrição é obrigatório.',
             'descricao.max' => 'A descrição deve ter no máximo 255 caracteres.',
             'idfornecedor.required' => 'O campo fornecedor é obrigatório.',
-            'idfornecedor.exists' => 'O fornecedor selecionado não é válido.',
+            'idfornecedor.exists' => 'O fornecedor selecionado não é válido.'
         ];
 
         // Validar os campos
@@ -70,7 +71,7 @@ class ServicoController extends Controller
 
     public function update(Request $request, $idservico)
     {
-        $this->validar($request);
+        $this->validar($request, $idservico);
         $servico = Servico::findOrFail($idservico);
         $servico->nome = $request->nome;
         $servico->descricao = $request->descricao;

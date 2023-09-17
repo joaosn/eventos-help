@@ -45,6 +45,10 @@
                             <button type="submit" class="btn btn-danger">🗑️</button>
                         </form>
                     </td>
+                @else
+                   <td>
+                       Bloqueado 
+                   </td> 
                 @endif
             </tr>
             @endforeach

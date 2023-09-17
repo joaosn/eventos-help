@@ -31,6 +31,7 @@
                 <td>{{ $servico->idservico }}</td>
                 <td>{{ $servico->nome }}</td>
                 <td>{{ $servico->descricao }}</td>
+                @if($servico->iduser == Auth::id())
                 <td>
                     <a href="/servico/{{ $servico->idservico }}/edit" class="btn btn-warning">✏️</a>
                     <!-- O botão de deletar pode ser integrado a um form para deletar o serviço -->
@@ -40,6 +41,11 @@
                         <button type="submit" class="btn btn-danger">🗑️</button>
                     </form>
                 </td>
+                @else
+                <td>
+                    Bloqueado
+                </td>
+                @endif
             </tr>
             @endforeach
         </tbody>

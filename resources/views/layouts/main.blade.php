@@ -12,7 +12,10 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    </body>
     <script src="{{ asset('js/mask.js') }}"></script>
 
 </head>
@@ -23,22 +26,42 @@
             <div class="row">
                 <div class="col-2">
                     <a href="{{ url('/') }}" class="navbar-brand">
-                        <img src="{{ asset('img/hdcevents_logo.svg') }}" alt="Visual Events">
+                        @if(isset(Auth::user()->profile_photo) && !empty(Auth::user()->profile_photo))
+                            <img src="{{ asset('img/users/' . Auth::user()->profile_photo_path ) }}" alt="Foto de Perfil" height="60px" width="100px">
+                        @else
+                            <img src="{{ asset('img/hdcevents_logo.svg') }}" alt="Visual Events">
+                        @endif
                     </a>
                 </div>
                 <div class="col text-center justify-content-center">
                     @auth
-                        <h5 class="mt-3">Bem Vindo(a): {{ Auth::user()->name }}</h5>
+                        <h5 class="mt-4">Bem Vindo(a): {{ Auth::user()->name }}</h5>
                     @endauth
                 </div>
             </div>
 
             <ul class="navbar-nav">
+                @auth
+                    @if(Auth::user()->tipo_usuario == 2)
+                    <li class="nav-item">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Relatorios
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{route('events.relEvents')}}">Eventos</a>
+                                <a class="dropdown-item" href="{{route('events.relUsers')}}">Usuarios/Eventos</a>
+                                <a class="dropdown-item" href="{{route('events.relServicos')}}">Serviços</a>
+                            </div>
+                        </div>
+                    </li>
+                    @endif
+                @endauth
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">Eventos</a>
+                    <a href="{{ url('/users') }}" class="nav-link">Perfil</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('events/create') }}" class="nav-link">Criar Eventos</a>
+                    <a href="{{ url('/') }}" class="nav-link">Eventos</a>
                 </li>
                 @auth
                 <li class="nav-item">

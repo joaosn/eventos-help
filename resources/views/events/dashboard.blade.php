@@ -6,9 +6,11 @@
 
 <div class="col-md-10 offset-md-1 dashboard-title-container">
     <h1>Meus Eventos</h1>
+    <button class="btn btn-primary">
+        <a href="{{ url('events/create') }}" class="nav-link">Criar Eventos</a>
+    </button>
 </div>
 <div class="col-md-10 offset-md-1 dashboard-events-container">
-    @if(count($events) > 0)
     <table class="table">
         <thead>
             <tr>
@@ -37,9 +39,5 @@
         @endforeach
     </tbody>
     </table>
-    @else
-    <p>Você ainda não tem eventos, <a href="/events/create">Crias evento</a></p>
-    @endif
-
 </div>
 @endsection

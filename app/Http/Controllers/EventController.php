@@ -92,6 +92,54 @@ class EventController extends Controller
 
     }
 
+    public function edit($id) {
+        $user = auth()->user();
+        $event = Event::findOrFail($id);
+        $servicos = Servico::with('fornecedor')->get();
+        $locais   = Local::all();
+        if($user->id != $event->user_id) {
+            return redirect('/dashboard');
+        }
+        return view('events.edit', ['event' => $event, 'servicos' => $servicos, 'locais' => $locais]);
+    }
+
+    public function update(Request $request, $id) {
+        $this->validar($request);
+    
+        $event = Event::findOrFail($id); // Buscar o evento pelo ID
+    
+        $cidade = '';
+        if(isset($request->local)){
+            $cidade = Local::find($request->local)->cidade;
+        }
+    
+        $event->title = $request->title;
+        $event->date = $request->date;
+        $event->city = $cidade;
+        $event->private = $request->private;
+        $event->description = $request->description;
+        $event->items = $request->items;
+        $event->idlocal = $request->local;
+        $event->idservico = implode(',', $request->servicos);
+    
+        if($request->hasfile('image') && $request->file('image')->isValid()) {
+            // Verificar se o evento já possui uma imagem, se sim, deletá-la
+            if ($event->image) {
+                unlink(public_path('img/events/' . $event->image));
+            }
+    
+            $requestImage = $request->image;
+            $extension = $requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            $requestImage->move(public_path('img/events'), $imageName);
+            $event->image = $imageName;
+        }
+    
+        $event->save();
+    
+        return redirect('/')->with('msg', 'Evento atualizado com sucesso!');
+    }
+    
     public function show($id) {
         $event = Event::findOrFail($id);
         // Obter informações do proprietário do evento
@@ -136,5 +184,18 @@ class EventController extends Controller
         return redirect('/dashboard')->with('msg', 'Evento excluído com sucesso!');
     }
 
+    public function relEventsUsers(Request $request) {
+        $eventsselect = Event::all();
+        $events = null;
+        if($request->event_id){
+            $events = Event::getRelatorioEventoUsuarios($request->event_id);
+        }
+           // dd($events->counts);
+        return view('relatorios.eventos_usuarios', ['events' => $events, 'eventsselect' => $eventsselect]);
+    }
 
+    public function relEvents(Request $request) {
+        $events = Event::all();
+        return view('relatorios.eventos', ['events' => $events]);
+    }
 }

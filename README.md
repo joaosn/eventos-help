@@ -1,3 +1,7 @@
+# dependencias para QRcode
+habilitar no php.ini
+
+extension=gd
 
 ## como rodar projeto 
 

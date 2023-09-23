@@ -96,4 +96,10 @@ class ServicoController extends Controller
         return redirect('/servico');
     }
 
+    public function relServicos()
+    {
+        $servicos = Servico::with('fornecedor')->get();
+        return view('relatorios.servicos', ['servicos' => $servicos]);
+    }
+
 }

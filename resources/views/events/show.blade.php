@@ -8,6 +8,13 @@
     <div class="row">
         <div id="image-container" class="col-md-6">
             <img src="/img/events/{{ $event->image }}" class="img-fluid" alt="{{ $event->title }}">
+            <hr>
+            @auth
+                @if(Auth::user()->id  == $event->user_id || Auth::user()->tipo_usuario == '2')
+                    <h3>Receber Participantes</h3>
+                    <a href="{{ route('events.qrcode', $event->id) }}" class="btn btn-primary">Gerador de Qrcode</a>
+                @endif
+            @endauth            
         </div>
         <div id="info-container" class="col-md-6">
             <h1>{{ $event->title }}</h1>

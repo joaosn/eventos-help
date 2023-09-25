@@ -34,13 +34,16 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Cidade: {{ $event['city'] }}</li>
             <li class="list-group-item">Data: {{ date('d/m/Y', strtotime($event['date']))  }}</li>
-            @foreach ($events->counts as $it) 
-                  <li class="list-group-item">Total {{$it->tipo}}: {{ $it->total_comfirmados }}</li>
-            @endforeach
+            @if(isset($events->counts))
+                @foreach ($events->counts as $it) 
+                    <li class="list-group-item">Total {{$it->tipo}}: {{ $it->total_comfirmados }}</li>
+                @endforeach
+            @endif
        </ul>
         <div class="card-body">
             <h6 class="card-subtitle mb-2 text-muted">Serviços e Fornecedores</h6>
             {{-- @if (isset($event['servicos_fornecedores']) && (is_array($event['servicos_fornecedores']) || is_object($event['servicos_fornecedores']))) --}}
+            @if(isset($events->servicos_fornecedores))
             @foreach ($events->servicos_fornecedores as $servico)
                 <ul class="list-group">
                     <li class="list-group-item">
@@ -50,6 +53,7 @@
                     </li>
                 </ul>
             @endforeach
+            @endif
             {{-- @endif --}}
         </div>
     </div>

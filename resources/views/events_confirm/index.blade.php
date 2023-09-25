@@ -50,7 +50,7 @@
                     @endif
             </tbody>
         </table>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#guestInfoModal">Gerar QR Code Convidado</button>
+        <button class="btn btn-primary" onclick="$('#guestInfoModal').modal('show');" data-bs-toggle="modal" data-bs-target="#guestInfoModal">Gerar QR Code Convidado</button>
 
         <!-- Modal para entrada de informações do convidado -->
         <div class="modal fade" id="guestInfoModal" tabindex="-1">
@@ -58,7 +58,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Informações do Convidado</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal">X</button>
+                        <button type="button" class="btn-close" onclick="$('#guestInfoModal').modal('hide');" data-bs-dismiss="modal">X</button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-secondary" onclick="$('#guestInfoModal').modal('hide');" data-bs-dismiss="modal">Fechar</button>
                         <button type="button" class="btn btn-primary" id="btnGenerateGuestQrCode">Gerar QR Code</button>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Seu QR Code</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">X</button>
+                    <button type="button" class="btn-close" onclick="$('#qrcodeModal').modal('hide');" data-bs-dismiss="modal">X</button>
                 </div>
                 <div class="modal-body">
                     <img src="" id="qrcodeImage" class="img-fluid">
@@ -140,6 +140,11 @@
                 var guestName = $('#guestName').val();
                 var guestEmail = $('#guestEmail').val();
                 var convidado = 1;
+
+                if(guestName.trim() == "" || guestEmail.trim() == ""){
+                    alert("Por favor, preencha o nome e o e-mail do convidado.");
+                    return;
+                }
 
                 $.ajax({
                     url: '/events/' + eventId + '/getQrcode',  // Modifique o URL conforme necessário

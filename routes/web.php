@@ -8,6 +8,7 @@ use App\Http\Controllers\LocalController;
 use App\Http\Controllers\EventConfirmationController;
 use App\Http\Controllers\UsersController;
 
+Route::get('/events/create', [EventController::class, 'create'])->middleware('auth');
 Route::get('/', [EventController::class, 'index']);
 Route::get('/events/{id}', [EventController::class, 'show']);
 Route::post('/events', [EventController::class, 'store']);
@@ -18,7 +19,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('servico', ServicoController::class);
     Route::resource('locais', LocalController::class);
     Route::resource('users', UsersController::class);
-    Route::get('/events/create', [EventController::class, 'create']);
     Route::get('/rel-eventos-users', [EventController::class, 'relEventsUsers'])->name('events.relUsers');
     Route::get('/rel-eventos', [EventController::class, 'relEvents'])->name('events.relEvents');
     Route::get('/rel-servicos', [ServicoController::class, 'relServicos'])->name('events.relServicos');

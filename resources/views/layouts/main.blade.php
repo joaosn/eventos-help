@@ -26,7 +26,8 @@
             <div class="row">
                 <div class="col-2">
                     <a href="{{ url('/') }}" class="navbar-brand">
-                        @if(isset(Auth::user()->profile_photo) && !empty(Auth::user()->profile_photo))
+                        
+                        @if(isset(Auth::user()->profile_photo_path) && !empty(Auth::user()->profile_photo_path))
                             <img src="{{ asset('img/users/' . Auth::user()->profile_photo_path ) }}" alt="Foto de Perfil" height="60px" width="100px">
                         @else
                             <img src="{{ asset('img/hdcevents_logo.svg') }}" alt="Visual Events">
